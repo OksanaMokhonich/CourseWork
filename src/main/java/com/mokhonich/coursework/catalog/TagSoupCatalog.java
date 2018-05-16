@@ -32,11 +32,12 @@ public class TagSoupCatalog {
 	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
 		String url = "https://sribniyvik.ua/ua/";
 		Document doc = openConnection(url);
-		System.out.println(doc == null);
+		//System.out.println(doc == null);
 		controller.openDatabaseConnection();
 		getCategoryInfo(doc);
+		
 		controller.closeConnection();
-		//getProdInfo("https://sribniyvik.ua/ua/kolca/pomolvochnye/");
+		
 
 	}
 	

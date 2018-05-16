@@ -2,6 +2,7 @@ package com.mokhonich.coursework.olx;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -10,9 +11,14 @@ import org.jsoup.select.Elements;
 
 public class JsoupOlx {
 
+	private static OlxDatabaseController controller = new OlxDatabaseController();
+	
 	public static void main(String[] args) throws IOException {
 		String url = "https://www.olx.ua/moda-i-stil/odezhda/kiev/?search%5Bprivate_business%5D=private&search%5Bpaidads_listing%5D=1";
+		controller.openDatabaseConnection();
 		Document doc = openConnection(url);
+		getAdvertInfo(doc);
+		controller.closeConnection();
 		getAdvertInfo(doc);
 
 	}
@@ -44,6 +50,7 @@ public class JsoupOlx {
 			System.out.println(advRegion);
 			System.out.println(advPrice);
 			System.out.println(advImg);
+			controller.addPoducts(advTitle, advHref, advPrice, advImg, advRegion);
 			System.out.println("***********************");
 		}
 		
@@ -64,13 +71,13 @@ public class JsoupOlx {
 		if(!nextHref.isEmpty()) {
 				rez = nextHref.get(0).attr("href");
 		}
-		return rez;
+		return rez.replace('"', '\'');
 	}
 	
 	private static String getAdvCategory(Element elem) {
 		String catAndSubcat = elem.getElementsByTag("small").get(0).text();
 		String category = catAndSubcat.split(" ")[0];
-		return category;
+		return category.replace('"', '\'');
 	}
 	
 	private static String getAdvSubcategory(Element elem) {
@@ -83,28 +90,28 @@ public class JsoupOlx {
 			subCategory +=" " + temp[i];
 		}
 		
-		return subCategory.trim();
+		return subCategory.trim().replace('"', '\'');
 	}
 	
 
 	private static String getAdvPrice(Element elem) {
-		return elem.getElementsByClass("price").get(0).text();
+		return elem.getElementsByClass("price").get(0).text().replace('"', '\'');
 	}
 	
 	private static String getAdvImg(Element elem) {
-		return elem.getElementsByTag("img").get(0).attr("src");
+		return elem.getElementsByTag("img").get(0).attr("src").replace('"', '\'');
 	}
 	
 	private static String getAdvRegion(Element elem) {
-		return elem.getElementsByTag("small").get(1).text();
+		return elem.getElementsByTag("small").get(1).text().replace('"', '\'');
 	}
 
 	private static String getAdvHref(Element elem) {
-		return elem.getElementsByTag("a").get(0).attr("href");
+		return elem.getElementsByTag("a").get(0).attr("href").replace('"', '\'');
 	}
 
 	private static String getAdvTitle(Element elem) {
-		return elem.getElementsByTag("h3").get(0).getElementsByTag("strong").get(0).text();
+		return elem.getElementsByTag("h3").get(0).getElementsByTag("strong").get(0).text().replace('"', '\'') ;
 	}
 
 }

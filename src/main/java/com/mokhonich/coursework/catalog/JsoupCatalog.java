@@ -15,7 +15,8 @@ public class JsoupCatalog {
 	
 	private static CatalogDatabaseController controller = new CatalogDatabaseController();
 	public static void main(String[] args) throws IOException {
-		Document doc = Jsoup.connect("https://sribniyvik.ua/ua/").timeout(10000).userAgent("Chrome/66.0.3359.139").get();
+		String url = "https://sribniyvik.ua/ua/";
+		Document doc = Jsoup.connect(url).timeout(10000).userAgent("Chrome/66.0.3359.139").get();
 		controller.openDatabaseConnection();
 		getCategoryInfo(doc);
 		controller.closeConnection();
@@ -39,6 +40,9 @@ public class JsoupCatalog {
 	public static String getCategoryName(Element elem) {
 		return elem.getElementsByTag("a").get(0).text().replace('"', '\'');
 	}
+	
+	
+
 	
 	public static String getCategoryHref(Element elem) {
 		return elem.getElementsByTag("a").get(0).attr("href").replace('"', '\'');

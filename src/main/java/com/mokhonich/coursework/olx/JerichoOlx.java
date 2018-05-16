@@ -14,6 +14,8 @@ import net.htmlparser.jericho.Source;
 
 public class JerichoOlx {
 
+	private static OlxDatabaseController controller = new OlxDatabaseController();
+	
 	public static void main(String[] args) throws IOException {
 		String url = "https://www.olx.ua/moda-i-stil/odezhda/kiev/?search%5Bprivate_business%5D=private&search%5Bpaidads_listing%5D=1";
 		// String page = SeleniumPage.getPageSource(url);
@@ -21,7 +23,9 @@ public class JerichoOlx {
 		Source source = new Source(new URL(url));
 		// Source source = new Source(page);
 		// System.out.println(source);
+		controller.openDatabaseConnection();
 		getAdvertInfo(source);
+		controller.closeConnection();
 
 	}
 
@@ -37,7 +41,7 @@ public class JerichoOlx {
 			rez = nextHref.get(0).getAttributeValue("href");
 		}
 
-		return rez;
+		return rez.replace('"', '\'');
 	}
 
 	public static void getAdvertInfo(Source source) throws IOException {
@@ -63,6 +67,7 @@ public class JerichoOlx {
 			System.out.println(advRegion);
 			System.out.println(advPrice);
 			System.out.println(advImg);
+			controller.addPoducts(advTitle, advHref, advPrice, advImg, advRegion);
 		}
 		
 		if(nextPage!=null) {
@@ -78,18 +83,18 @@ public class JerichoOlx {
 
 	private static String getAdvImg(Element elem) {
 
-		return elem.getAllElementsByClass("fleft").get(0).getAttributeValue("src").toString();
+		return elem.getAllElementsByClass("fleft").get(0).getAttributeValue("src").toString().replace('"', '\'');
 	}
 
 	private static String getAdvPrice(Element elem) {
 
-		return elem.getAllElementsByClass("price").get(0).getChildElements().get(0).getContent().toString();
+		return elem.getAllElementsByClass("price").get(0).getChildElements().get(0).getContent().toString().replace('"', '\'');
 	}
 
 	private static String getAdvRegion(Element elem) {
 		String region = elem.getAllElementsByClass("breadcrumb x-normal").get(1).getChildElements().get(0).getContent()
 				.toString().trim();
-		return region;
+		return region.replace('"', '\'');
 	}
 
 	private static String getAdvSubcategory(Element elem) {
@@ -102,23 +107,23 @@ public class JerichoOlx {
 		for (int i = 2; i < temp.length; i++) {
 			subCategory += " " + temp[i];
 		}
-		return subCategory.trim();
+		return subCategory.trim().replace('"', '\'');
 
 	}
 
 	private static String getAdvCategory(Element elem) {
 		String catAndSubCat = elem.getAllElementsByClass("space").get(0).getAllElementsByClass("breadcrumb").get(0)
 				.getContent().toString().trim();
-		return catAndSubCat.split(" ")[0];
+		return catAndSubCat.split(" ")[0].replace('"', '\'');
 	}
 
 	private static String getAdvTitle(Element elem) {
 
-		return elem.getAllElementsByClass("link").get(0).getChildElements().get(0).getContent().toString().trim();
+		return elem.getAllElementsByClass("link").get(0).getChildElements().get(0).getContent().toString().trim().replace('"', '\'');
 	}
 
 	private static String getAdvHref(Element elem) {
 
-		return elem.getAllElementsByClass("link").get(0).getAttributeValue("href");
+		return elem.getAllElementsByClass("link").get(0).getAttributeValue("href").replace('"', '\'');
 	}
 }
