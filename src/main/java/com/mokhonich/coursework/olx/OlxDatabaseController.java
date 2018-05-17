@@ -8,72 +8,61 @@ import java.sql.Statement;
 
 public class OlxDatabaseController {
 
-	// JDBC URL, username and password of MySQL server
-	private static final String url = "jdbc:mysql://localhost:3306/olxdatabase?useUnicode=true&characterEncoding=utf-8";
-	private static final String user = "root";
-	private static final String password = "root";
+	private static final String DB = "jdbc:mysql://localhost:3306/olxdatabase?useUnicode=true&characterEncoding=utf-8";
+	private static final String LOGIN = "root";
+	private static final String PASSWORD = "root";
 
-	// JDBC variables for opening and managing connection
-	private static Connection con;
-	private static Statement stmt;
-	private static ResultSet rs;
-
-	public static void main(String args[]) {
-		openDatabaseConnection();
-		addPoducts("productName", "productHref", "productPrice", "productImage", "productRegion");
-
-	}
+	private static Connection connection;
+	private static Statement statement;
+	private static ResultSet result;
 
 	public static void openDatabaseConnection() {
 		try {
-
-			con = DriverManager.getConnection(url, user, password);
-
-			stmt = con.createStatement();
+			connection = DriverManager.getConnection(DB, LOGIN, PASSWORD);
+			statement = connection.createStatement();
 		} catch (SQLException sqlEx) {
 			sqlEx.printStackTrace();
 		}
-		System.out.println("success");
 	}
 
 	public static void addPoducts(String productName, String productHref, String productPrice, String productImage,
 			String productRegion) {
 		String insertQuery = "INSERT INTO `products` (`Product_Id`, `Product_Name`, `Product_Href`, `Product_Price`, `Product_Image`, `Product_Region`) VALUES (NULL, \""
-				+ productName + "\", \""+productHref+"\", \""+productPrice+"\", \""+productImage+"\", \""+productRegion+"\");";
-		System.out.println(insertQuery);
-
+				+ productName + "\", \"" + productHref + "\", \"" + productPrice + "\", \"" + productImage + "\", \""
+				+ productRegion + "\");";
 		try {
-			stmt.executeUpdate(insertQuery);
-			System.out.println("success adding news");
+			statement.executeUpdate(insertQuery);
+			// System.out.println("success adding news");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public static void put(String q) {
 		try {
-			stmt.executeUpdate(q);
-			System.out.println("success");
+			statement.executeUpdate(q);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public static void closeConnection() {
 		try {
-			con.close();
+			connection.close();
 		} catch (SQLException se) {
-			/* can't do anything */ }
+			se.printStackTrace();
+		}
 		try {
-			stmt.close();
+			statement.close();
 		} catch (SQLException se) {
-			/* can't do anything */ }
+			se.printStackTrace();
+		}
 		try {
-			if(rs!=null)rs.close();
+			if (result != null)
+				result.close();
 		} catch (SQLException se) {
-			/* can't do anything */ }
+			se.printStackTrace();
+		}
 
 	}
 

@@ -2,16 +2,10 @@ package com.mokhonich.coursework.news;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import net.htmlparser.jericho.Element;
-import net.htmlparser.jericho.HTMLElementName;
-import net.htmlparser.jericho.Segment;
 import net.htmlparser.jericho.Source;
 
 import com.mokhonich.coursework.SeleniumPage;
@@ -21,7 +15,8 @@ public class ParseNewsWithJericho {
 	private static NewsDatabaseController controller = new NewsDatabaseController();
 	
 	public static void main(String[] args) throws MalformedURLException, IOException, InterruptedException  {
-		String page = SeleniumPage.getPageSource("https://www.ukr.net/news/main.html");
+		String url = "https://www.ukr.net/news/main.html";
+		String page = SeleniumPage.getPageSource(url);
 		Source source = new Source(page);
 		controller.openDatabaseConnection();
 		getNewsCategories(source);
@@ -57,7 +52,7 @@ public class ParseNewsWithJericho {
 			String newsHref = getNewsHref(temp);
 			String goodNewsHref = "https:" + newsHref;
 			controller.addNews(newsText1, time, goodNewsHref, categoryTitle);
-			System.out.println(time + "---" + newsText1 + "---" +goodNewsHref);
+			//System.out.println(time + "---" + newsText1 + "---" +goodNewsHref);
 
 		}
 	}

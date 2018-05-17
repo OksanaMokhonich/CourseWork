@@ -28,7 +28,6 @@ public class TagSoupOlx {
 		XPathFactory xpathFac = XPathFactory.newInstance();
 		XPath theXpath = xpathFac.newXPath();
 		NodeList nodes = (NodeList) theXpath.evaluate("//*[@class=\"pager rel clr\"]/*", node, XPathConstants.NODESET);
-		//System.out.println(nodes.getLength());
 		int len = nodes.getLength();
 		Node nextNode = nodes.item(len-1);
 		String nodeName = nextNode.getChildNodes().item(1).getNodeName();
@@ -75,12 +74,12 @@ public class TagSoupOlx {
 			String href = getHref(temp);
 			String imageHref = getImgHref(temp);
 			String price = getPrice(temp);
-			System.out.println(title);
+			/*System.out.println(title);
 			System.out.println(href);
 			System.out.println(imageHref);
 			System.out.println(price);
 			System.out.println(catSubCat);
-			System.out.println(cat);
+			System.out.println(cat);*/
 			controller.addPoducts(title, href, price, imageHref, region);
 		}
 		
@@ -166,8 +165,8 @@ public class TagSoupOlx {
 
 	public static Document openConnection(String url) throws IOException, SAXException, ParserConfigurationException {
 		Parser p = new Parser();
-		//String page = readFile("cat.txt");
 		String page = SeleniumPage.getPageSource(url);
+		
 		InputSource inputSource = new InputSource(new StringReader(page));
 		SAX2DOM sax2dom = null;
 		org.w3c.dom.Node node = null;

@@ -1,14 +1,9 @@
 package com.mokhonich.coursework.catalog;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
@@ -33,7 +28,7 @@ public class JerichoCatalog {
 		for (Element elem : itemInner) {
 			String categoryName = getCategoryName(elem);
 			String categoryHref = getCategoryHref(elem);
-			System.out.println(categoryName + "******" + categoryHref);
+			//System.out.println(categoryName + "******" + categoryHref);
 			if (!categoryName.equals("Інші категорії")) {
 				controller.addCategories(categoryName, categoryHref);
 				getSubCategoryInfo(categoryName, categoryHref);
@@ -108,17 +103,15 @@ public class JerichoCatalog {
 			if(!prodHref.equals("https://sribniyvik.ua/ua/dostavka-i-oplata/")) {
 				String prodName = getProductName(elem);
 				String prodImage = getProductImageHref(elem);
-				System.out.println(prodName);
-				System.out.println(prodHref);
+				//System.out.println(prodName);
+				//System.out.println(prodHref);
 				String prodPrice = getProductPrice(elem);
-				System.out.println(prodPrice);
+				//System.out.println(prodPrice);
 				controller.addPoducts(prodName, prodHref,prodPrice, prodImage,  subCategoryName);
 			}
 	}
 		if(!nextHrefs.equals("")) {
-			System.out.println("******************************************"
-					+ "******************************************"
-					+ "*****************************");
+			//System.out.println("********");
 			getProdInfo(subCategoryName, url);
 		}
 		

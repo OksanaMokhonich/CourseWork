@@ -22,11 +22,8 @@ public class ParseNewsWithJsoup {
 	static NewsDatabaseController controller = new NewsDatabaseController ();
 	public static void main(String[] args) throws IOException, InterruptedException {
 		controller.openDatabaseConnection();
-		Document doc = Jsoup.parse(SeleniumPage.getPageSource("https://www.ukr.net/news/main.html"));
-		/*FileWriter writer = new FileWriter("news.txt", false);
-        String text = doc.toString();
-        writer.write(text);        
-        writer.flush();*/
+		String url ="https://www.ukr.net/news/main.html";
+		Document doc = Jsoup.parse(SeleniumPage.getPageSource(url));
 		getNewsCategories(doc);
 		controller.closeConnection();
 		
@@ -37,13 +34,12 @@ public class ParseNewsWithJsoup {
 	
 	
 	public static void getNewsCategories(Document document) throws InterruptedException {
-		System.out.println("start");
 		Elements li = document.getElementsByClass("n-m_li");
 		System.out.println(li.text());
 		for(Element temp: li) {
 			String categoryTitle = getCategoryTitle(temp).replace('"', '\'');;
 			String categoryHref = getCategoryHref(temp);
-			System.out.println(categoryHref+" ++++++");
+			//System.out.println(categoryHref+" ++++++");
 			String goodCategoryHref = "https:" + categoryHref;
 			if(!categoryTitle.equals("В регіоні<i class=\"r-r\"></i>")) {
 			Document doc = Jsoup.parse(SeleniumPage.getAllPageSource(goodCategoryHref));
@@ -72,7 +68,7 @@ public class ParseNewsWithJsoup {
 			String newsText1 = newsText.replace('"', '\'');
 			String newsHref = getNewsHref(temp);
 			String goodNewsHref = newsHref;
-			System.out.println(categoryTitle);
+			//System.out.println(categoryTitle);
 			controller.addNews(newsText1, time, goodNewsHref, categoryTitle);
 			System.out.println(time + "---" + newsText + "---" +goodNewsHref);
 			controller.closeConnection();

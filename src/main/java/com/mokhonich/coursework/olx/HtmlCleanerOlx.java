@@ -13,9 +13,9 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
 
 public class HtmlCleanerOlx {
-	
+
 	private static OlxDatabaseController controller = new OlxDatabaseController();
-	
+
 	public static void main(String[] args) throws XPatherException {
 		HtmlCleaner cleaner = new HtmlCleaner();
 		String url = "https://www.olx.ua/moda-i-stil/odezhda/kiev/?search%5Bprivate_business%5D=private&search%5Bpaidads_listing%5D=1";
@@ -27,10 +27,10 @@ public class HtmlCleanerOlx {
 	}
 
 	public static String getNextHref(TagNode html) throws XPatherException {
-		String next= "";
+		String next = "";
 		List<TagNode> childs = ((TagNode) html.evaluateXPath("//*[@class=\"pager rel clr\"]")[0]).getChildren();
-		TagNode last = childs.get(childs.size()-1);
-		next =  ((TagNode)last.evaluateXPath("/a")[0]).getAttributeByName("href").toString();
+		TagNode last = childs.get(childs.size() - 1);
+		next = ((TagNode) last.evaluateXPath("/a")[0]).getAttributeByName("href").toString();
 		return next.replace('"', '\'');
 	}
 
@@ -44,7 +44,6 @@ public class HtmlCleanerOlx {
 		// Elements adverts = page.getElementsByClass("wrap");
 		//// *[@id="body-container"]/div[3]/div/div[4]
 		// #body-container > div:nth-child(3) > div > div.pager.rel.clr
-		//
 
 		String nextHref = getNextHref(html);
 		Object[] adverts = html.evaluateXPath("//tr[@class=\"wrap\"]");
@@ -60,28 +59,25 @@ public class HtmlCleanerOlx {
 			String advPrice = getAdvPrice(node);// ціна
 			String advImg = getAdvImg(node);// фото*/
 
-			System.out.println(advHref);
-			System.out.println(advTitle);
-			System.out.println(cat);
-			System.out.println(subCat);
-			System.out.println(advRegion);
-			System.out.println(advPrice);
-			System.out.println(advImg);
+			/*
+			 * System.out.println(advHref); System.out.println(advTitle);
+			 * System.out.println(cat); System.out.println(subCat);
+			 * System.out.println(advRegion); System.out.println(advPrice);
+			 * System.out.println(advImg);
+			 */
 			controller.addPoducts(advTitle, advHref, advPrice, advImg, advRegion);
 		}
-		
-		if(nextHref!=null) {
-			System.out.println("1111111111111111111111111111111111");
+
+		if (nextHref != null) {
 			getAdvertInfo(openConnection(nextHref));
 		}
 
 	}
 
 	private static String getAdvImg(TagNode node) throws XPatherException {
-		// TODO Auto-generated method stub
-		TagNode temp  = ((TagNode) node.evaluateXPath("//a/img")[0]);
-		if(temp!=null){
-		return temp.getAttributeByName("src").toString().replace('"', '\'');
+		TagNode temp = ((TagNode) node.evaluateXPath("//a/img")[0]);
+		if (temp != null) {
+			return temp.getAttributeByName("src").toString().replace('"', '\'');
 		}
 		return "";
 	}
@@ -98,11 +94,10 @@ public class HtmlCleanerOlx {
 
 	private static String getAdvSubcategory(TagNode node) throws XPatherException {
 
-		String catAndSubCat = ((TagNode) node.evaluateXPath("//p/small")[0]).getText().toString().trim().replace('"', '\'');
+		String catAndSubCat = ((TagNode) node.evaluateXPath("//p/small")[0]).getText().toString().trim().replace('"',
+				'\'');
 		String[] temp = catAndSubCat.split(" ");
-
 		String subCategory = "";
-
 		for (int i = 2; i < temp.length; i++) {
 			subCategory += " " + temp[i];
 		}

@@ -9,6 +9,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.cyberneko.html.HTMLConfiguration;
 import org.cyberneko.html.parsers.DOMParser;
 
 import org.w3c.dom.Document;
@@ -20,24 +21,28 @@ import org.xml.sax.SAXException;
 
 public class NekoOlx {
 	
-	public static Document openConnection(String url) throws SAXException, IOException {
+	public static Node openConnection(String url) throws SAXException, IOException {
+		 
 		DOMParser parser = new DOMParser();
-			parser.parse(new InputSource(url));
-			return parser.getDocument();
+		  parser.setProperty("http://cyberneko.org/html/properties/names/elems", "lower");
+		    parser.setProperty("http://cyberneko.org/html/properties/names/attrs", "lower");
+		parser.parse(new org.xml.sax.InputSource(url));
+		System.out.println(parser.getDocument().getFirstChild());
+		return (org.w3c.dom.Node)parser.getDocument();
 	}
-
-
+	
 	private static OlxDatabaseController controller = new OlxDatabaseController();
 	
 	public static String getNextHref(Node node) throws XPathExpressionException {
 		XPathFactory xpathFac = XPathFactory.newInstance();
 		XPath theXpath = xpathFac.newXPath();
 		NodeList nodes = (NodeList) theXpath.evaluate("//*[@class=\"pager rel clr\"]/*", node, XPathConstants.NODESET);
-		//System.out.println(nodes.getLength());
+		System.out.println(nodes);
 		int len = nodes.getLength();
 		Node nextNode = nodes.item(len-1);
+		System.out.println(nextNode.getChildNodes().item(1).getNodeName());
 		String nodeName = nextNode.getChildNodes().item(1).getNodeName();
-		if(nodeName.equals("a")) {
+		if(nodeName.equals("A")) {
 		return nextNode.getChildNodes().item(1).getAttributes().getNamedItem("href").getTextContent();
 		}
 		return null;
@@ -55,7 +60,7 @@ public class NekoOlx {
 		
 	}
 	
-	private static void getAdvertInfo(Node node)
+	static void getAdvertInfo(Node node)
 			throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
 		String nextHref = getNextHref(node);
 		System.out.println("next = " + nextHref);
@@ -66,14 +71,8 @@ public class NekoOlx {
 		System.out.println(nodes.getLength());
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Node temp = nodes.item(i);
-
-			Node bottom = nodes.item(i).getChildNodes().item(1).getChildNodes().item(0);
-			Node firstTr = nodes.item(i).getFirstChild();
-			Node bottomDiv = bottom.getChildNodes().item(1);
-			Node top = firstTr.getChildNodes().item(1);
-			Node topDiv = top.getChildNodes().item(1);
-
-			String region = getRegion(temp);
+			System.out.println(temp);
+			/*String region = getRegion(temp);
 			String title = getTitle(temp);
 			String catSubCat = getSubCat(temp);
 			String cat = getCat(temp);
@@ -86,14 +85,10 @@ public class NekoOlx {
 			System.out.println(price);
 			System.out.println(catSubCat);
 			System.out.println(cat);
-			controller.addPoducts(title, href, price, imageHref, region);
+			controller.addPoducts(title, href, price, imageHref, region);*/
+		}
 		}
 		
-		if(nextHref!=null) {
-			getAdvertInfo(openConnection(nextHref));
-		}
-	}
-
 
 	public static String getPrice(Node node) {
 		String rez = "";
@@ -107,7 +102,7 @@ public class NekoOlx {
 			goodPrice = "" + top.getNextSibling().getChildNodes().item(1).getChildNodes().item(3).getTextContent();
 			badPrice = goodPrice;
 		}
-		boolean pr = badPrice.equals("div");
+		boolean pr = badPrice.equals("DIV");
 		if (pr) {
 			return goodPrice;
 		}
@@ -141,13 +136,13 @@ public class NekoOlx {
 
 	public static String getImgHref(Node node) {
 		String imageHref = node.getFirstChild().getFirstChild().getChildNodes().item(1).getChildNodes().item(1)
-				.getAttributes().getNamedItem("src").getTextContent().toString(); // img
+				.getAttributes().getNamedItem("SRC").getTextContent().toString(); // img
 		return imageHref.replace('"', '\'');
 	}
 
 	public static String getHref(Node node) {
 		Node firstTr = node.getFirstChild();
-		String href = firstTr.getFirstChild().getChildNodes().item(1).getAttributes().getNamedItem("href")
+		String href = firstTr.getFirstChild().getChildNodes().item(1).getAttributes().getNamedItem("HREF")
 				.getTextContent().toString().trim();
 		return href.replace('"', '\'');
 	}

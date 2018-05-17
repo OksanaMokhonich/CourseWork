@@ -15,14 +15,12 @@ import net.htmlparser.jericho.Source;
 public class JerichoOlx {
 
 	private static OlxDatabaseController controller = new OlxDatabaseController();
-	
+
 	public static void main(String[] args) throws IOException {
 		String url = "https://www.olx.ua/moda-i-stil/odezhda/kiev/?search%5Bprivate_business%5D=private&search%5Bpaidads_listing%5D=1";
-		// String page = SeleniumPage.getPageSource(url);
 
 		Source source = new Source(new URL(url));
-		// Source source = new Source(page);
-		// System.out.println(source);
+
 		controller.openDatabaseConnection();
 		getAdvertInfo(source);
 		controller.closeConnection();
@@ -31,25 +29,19 @@ public class JerichoOlx {
 
 	public static String getNextHref(Source source) {
 		String rez = "";
-
 		List<Element> elem = source.getAllElementsByClass("pager").get(0).getAllElementsByClass("fleft");
-		
 		List<Element> nextHref = source.getAllElementsByClass("pager").get(0).getAllElementsByClass("next").get(0)
 				.getAllElementsByClass("pageNextPrev");
-		
 		if (!nextHref.isEmpty()) {
 			rez = nextHref.get(0).getAttributeValue("href");
 		}
-
 		return rez.replace('"', '\'');
 	}
 
 	public static void getAdvertInfo(Source source) throws IOException {
 		String nextPage = "";
-		nextPage= getNextHref(source);
-		
-		System.out.println("next = " + nextPage);
-		
+		nextPage = getNextHref(source);
+		// System.out.println("next = " + nextPage);
 		List<Element> adverts = source.getAllElementsByClass("wrap");
 		for (Element elem : adverts) {
 			String advHref = getAdvHref(elem);// посиланя
@@ -60,23 +52,21 @@ public class JerichoOlx {
 			String advPrice = getAdvPrice(elem);// ціна
 			String advImg = getAdvImg(elem);// фото
 
-			System.out.println(advHref);
-			System.out.println(advTitle);
-			System.out.println(cat);
-			System.out.println(subCat);
-			System.out.println(advRegion);
-			System.out.println(advPrice);
-			System.out.println(advImg);
+			/*
+			 * System.out.println(advHref); System.out.println(advTitle);
+			 * System.out.println(cat); System.out.println(subCat);
+			 * System.out.println(advRegion); System.out.println(advPrice);
+			 * System.out.println(advImg);
+			 */
 			controller.addPoducts(advTitle, advHref, advPrice, advImg, advRegion);
 		}
-		
-		if(nextPage!=null) {
-			System.out.println("11111111111111111111111111111111111111111111111111111111111111");
+
+		if (nextPage != null) {
 			getAdvertInfo(openConnection(nextPage));
 		}
 
 	}
-	
+
 	private static Source openConnection(String url) throws MalformedURLException, IOException {
 		return new Source(new URL(url));
 	}
@@ -88,7 +78,8 @@ public class JerichoOlx {
 
 	private static String getAdvPrice(Element elem) {
 
-		return elem.getAllElementsByClass("price").get(0).getChildElements().get(0).getContent().toString().replace('"', '\'');
+		return elem.getAllElementsByClass("price").get(0).getChildElements().get(0).getContent().toString().replace('"',
+				'\'');
 	}
 
 	private static String getAdvRegion(Element elem) {
@@ -119,7 +110,8 @@ public class JerichoOlx {
 
 	private static String getAdvTitle(Element elem) {
 
-		return elem.getAllElementsByClass("link").get(0).getChildElements().get(0).getContent().toString().trim().replace('"', '\'');
+		return elem.getAllElementsByClass("link").get(0).getChildElements().get(0).getContent().toString().trim()
+				.replace('"', '\'');
 	}
 
 	private static String getAdvHref(Element elem) {

@@ -1,14 +1,11 @@
 package com.mokhonich.coursework.catalog;
 
-import java.io.FileWriter;
 import java.io.IOException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import com.mokhonich.coursework.SeleniumPage;
 
 public class JsoupCatalog {
 
@@ -30,7 +27,7 @@ public class JsoupCatalog {
 			
 		String categoryName = getCategoryName(elem);
 		String categoryHref = getCategoryHref(elem);
-		System.out.println(categoryName + "******" + categoryHref);
+		//System.out.println(categoryName + "******" + categoryHref);
 		if(!categoryName.equals("Інші категорії")) {
 			controller.addCategories(categoryName, categoryHref);
 			getSubCategoryInfo(categoryName, categoryHref);}
@@ -57,7 +54,7 @@ public class JsoupCatalog {
 			
 		String subCategoryName = getSubCategoryName(elem);
 		String subCategoryHref = getSubCategoryHref(elem);
-		System.out.println(subCategoryName + "------" +subCategoryHref);
+		//System.out.println(subCategoryName + "------" +subCategoryHref);
 		controller.addSubCategories(subCategoryName, subCategoryHref, categoryName);
 		getProdInfo(subCategoryName,subCategoryHref);
 		}	
@@ -102,15 +99,13 @@ public class JsoupCatalog {
 			String prodImage = getProductImageHref(prod);
 			String prodPrice = getProductPrice(prod);
 			if(!prodHref.equals("https://sribniyvik.ua/ua/dostavka-i-oplata/")) {
-				System.out.println(prodName + " %%%%%%%%" + prodHref + "%%%%" + prodImage + "%%%%%" + prodPrice);
+				//System.out.println(prodName + " %%%%%%%%" + prodHref + "%%%%" + prodImage + "%%%%%" + prodPrice);
 				controller.addPoducts(prodName, prodHref, prodPrice, prodImage, subCategoryName);
 				}
 		}
 		
 		if(!nextHrefs.equals("")) {
-			System.out.println("******************************************"
-					+ "******************************************"
-					+ "*****************************");
+			System.out.println("***********************");
 			getProdInfo(subCategoryName, url);
 		}
 			

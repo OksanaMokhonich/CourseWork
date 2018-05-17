@@ -1,20 +1,11 @@
 package com.mokhonich.coursework.catalog;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
 
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import com.mokhonich.coursework.SeleniumPage;
 
@@ -28,8 +19,6 @@ public class HtmlCleanerCatalog {
 		controller.openDatabaseConnection();
 		getCategoryInfo(openConnection(url));
 		controller.closeConnection();
-		//getSubCategoryInfo("https://sribniyvik.ua/ua/kolca/");
-		System.out.println("success");
 
 	}
 	
@@ -46,7 +35,7 @@ public class HtmlCleanerCatalog {
 			////*[@id="nav"]/li[1]/div/div[1]/a
 			String categoryName = getCategoryName(node);
 			String categoryHref = getCategoryHref(node);
-			System.out.println(categoryName + "....." + categoryHref);
+			//System.out.println(categoryName + "....." + categoryHref);
 			
 			if(!categoryName.equals("Інші категорії")) {
 				controller.addCategories(categoryName, categoryHref);
@@ -106,10 +95,8 @@ public class HtmlCleanerCatalog {
 			///html/body/div[1]/main/div/div/div[3]/div[2]/form/fieldset/div[2]/ul/li[11]/div/a
 		}
 		
-		if(!nextHrefs.equals("")) {
-			System.out.println("******************************************"
-					+ "******************************************"
-					+ "*****************************");
+		if(!("").equals(nextHrefs)) {
+			//System.out.println("****")
 			getProdInfo(subCategoryName, url);
 		}
 	}

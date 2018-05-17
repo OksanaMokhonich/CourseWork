@@ -22,14 +22,12 @@ public class ParseNewsWithHtmlCleaner {
 	
 	public static void main(String[] args) throws MalformedURLException, IOException, XPatherException, InterruptedException {
 		HtmlCleaner cleaner = new HtmlCleaner();
-		String page = SeleniumPage.getPageSource("https://www.ukr.net/news/main.html");
+		String url = "https://www.ukr.net/news/main.html";
+		String page = SeleniumPage.getPageSource(url);
 		TagNode html = cleaner.clean(page);
 		controller.openDatabaseConnection();
 		getNewsCategories(html);
-		controller.closeConnection();
-		/*String page = SeleniumPage.getAllPageSource("https://www.ukr.net/news/politika.html");
-		TagNode html = cleaner.clean(page);
-		getNewsInfo(html);*/
+		
 	}
 	
 	public static void getNewsCategories(TagNode html) throws XPatherException, InterruptedException {
@@ -39,7 +37,6 @@ public class ParseNewsWithHtmlCleaner {
 			String categoryHref = getCategoryHref(node).replace('"', '\'');
 			String categoryName = getCategoryTitle(node);
 			if(!categoryName.equals("В регіоні")) {
-				System.out.println(categoryName);
 				String page = SeleniumPage.getAllPageSource(categoryHref);
 				HtmlCleaner cleaner = new HtmlCleaner();
 				TagNode html1 = cleaner.clean(page);
@@ -57,7 +54,7 @@ public class ParseNewsWithHtmlCleaner {
 			String newsHref = 	getNewsHref(node).replace('"', '\'');
 			String newsTitle = getNewsTitle(node).replace('"', '\'');
 			controller.addNews(newsTitle, newsTime, newsHref, categoryName);
-			System.out.println(newsTime + "......." + newsTitle + "...." + newsHref);
+			//System.out.println(newsTime + "......." + newsTitle + "...." + newsHref);
 		}
 	}
 	
