@@ -10,12 +10,13 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.mokhonich.coursework.SeleniumPage;
+import com.mokhonich.coursework.database.NewsDatabaseController;
+import com.mokhonich.coursework.selenium.SeleniumPage;
 
 public class ParsingNewsWithNeko {
 	private static NewsDatabaseController controller = new NewsDatabaseController();
 
-	public static void main(String[] argv) throws Exception {
+	public static void testNekoNews() throws Exception {
 		String url = "https://www.ukr.net/news/main.html";
 		controller.openDatabaseConnection();
 		getNewsCategories(openConnection(url));

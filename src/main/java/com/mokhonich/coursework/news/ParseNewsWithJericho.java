@@ -8,13 +8,14 @@ import java.util.List;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
 
-import com.mokhonich.coursework.SeleniumPage;
+import com.mokhonich.coursework.database.NewsDatabaseController;
+import com.mokhonich.coursework.selenium.SeleniumPage;
 
 public class ParseNewsWithJericho {
 
 	private static NewsDatabaseController controller = new NewsDatabaseController();
 	
-	public static void main(String[] args) throws MalformedURLException, IOException, InterruptedException  {
+	public static void testJerichoNews() throws MalformedURLException, IOException, InterruptedException  {
 		String url = "https://www.ukr.net/news/main.html";
 		String page = SeleniumPage.getPageSource(url);
 		Source source = new Source(page);

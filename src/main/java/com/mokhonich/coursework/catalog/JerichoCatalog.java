@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import com.mokhonich.coursework.database.CatalogDatabaseController;
+
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
@@ -13,12 +15,11 @@ public class JerichoCatalog {
 
 	private static CatalogDatabaseController controller = new CatalogDatabaseController();
 	
-	public static void main(String[] args) throws MalformedURLException, IOException {
+	public static void testJerichoCatalog() throws MalformedURLException, IOException {
 		Source page = new Source(new URL("https://sribniyvik.ua/ua/"));
 		controller.openDatabaseConnection();
 		getGoodsCategoryInfo("https://sribniyvik.ua/ua/podveski/podveski-s-tsepochkoy/");
 		controller.closeConnection();
-		System.out.println("success");
 	}
 
 	public static void getGoodsCategoryInfo(String url) throws IOException {

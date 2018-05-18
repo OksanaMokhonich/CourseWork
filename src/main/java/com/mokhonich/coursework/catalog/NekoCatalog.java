@@ -12,13 +12,15 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.mokhonich.coursework.SeleniumPage;
+import com.mokhonich.coursework.database.CatalogDatabaseController;
+import com.mokhonich.coursework.selenium.SeleniumPage;
 
 public class NekoCatalog {
 
 	private static CatalogDatabaseController controller = new CatalogDatabaseController();
 
-	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
+	
+	public static void testNekoCatalog() throws SAXException, IOException, ParserConfigurationException {
 		String url = "https://sribniyvik.ua/ua/";
 		Document doc = openConnection(url);
 		controller.openDatabaseConnection();

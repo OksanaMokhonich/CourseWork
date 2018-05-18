@@ -7,7 +7,8 @@ import java.util.List;
 
 import org.jsoup.select.Elements;
 
-import com.mokhonich.coursework.SeleniumPage;
+import com.mokhonich.coursework.database.OlxDatabaseController;
+import com.mokhonich.coursework.selenium.SeleniumPage;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
@@ -16,7 +17,7 @@ public class JerichoOlx {
 
 	private static OlxDatabaseController controller = new OlxDatabaseController();
 
-	public static void main(String[] args) throws IOException {
+	public static void testJerichoOlx() throws IOException {
 		String url = "https://www.olx.ua/moda-i-stil/odezhda/kiev/?search%5Bprivate_business%5D=private&search%5Bpaidads_listing%5D=1";
 
 		Source source = new Source(new URL(url));

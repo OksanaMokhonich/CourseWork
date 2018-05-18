@@ -6,11 +6,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.mokhonich.coursework.database.OlxDatabaseController;
+
 public class JsoupOlx {
 
 	private static OlxDatabaseController controller = new OlxDatabaseController();
 
-	public static void main(String[] args) throws IOException {
+	public static void testJsoupOlx() throws IOException {
 		String url = "https://www.olx.ua/moda-i-stil/odezhda/kiev/?search%5Bprivate_business%5D=private&search%5Bpaidads_listing%5D=1";
 		controller.openDatabaseConnection();
 		Document doc = openConnection(url);

@@ -18,7 +18,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.mokhonich.coursework.SeleniumPage;
+import com.mokhonich.coursework.database.OlxDatabaseController;
+import com.mokhonich.coursework.selenium.SeleniumPage;
 
 public class TagSoupOlx {
 
@@ -37,8 +38,10 @@ public class TagSoupOlx {
 		return null;
 		
 	}
+	
 
-	public static void main(String[] args)
+
+	public static void testTagSoupOlx()
 			throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
 		String url = "https://www.olx.ua/moda-i-stil/odezhda/kiev/?search%5Bprivate_business%5D=private&search%5Bpaidads_listing%5D=1";
 		Node node = openConnection(url);

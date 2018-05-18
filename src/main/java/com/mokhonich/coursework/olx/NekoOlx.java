@@ -18,8 +18,23 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.mokhonich.coursework.database.OlxDatabaseController;
+
 
 public class NekoOlx {
+	
+	private static OlxDatabaseController controller = new OlxDatabaseController();
+	
+	public static void testNekoOLx()
+			throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
+		String url = "https://www.olx.ua/moda-i-stil/odezhda/kiev/?search%5Bprivate_business%5D=private&search%5Bpaidads_listing%5D=1";
+		Node node = openConnection(url);
+		controller.openDatabaseConnection();
+		getAdvertInfo(node);
+		controller.closeConnection();
+
+		
+	}
 	
 	public static Node openConnection(String url) throws SAXException, IOException {
 		 
@@ -31,7 +46,7 @@ public class NekoOlx {
 		return (org.w3c.dom.Node)parser.getDocument();
 	}
 	
-	private static OlxDatabaseController controller = new OlxDatabaseController();
+	
 	
 	public static String getNextHref(Node node) throws XPathExpressionException {
 		XPathFactory xpathFac = XPathFactory.newInstance();
@@ -46,17 +61,6 @@ public class NekoOlx {
 		return nextNode.getChildNodes().item(1).getAttributes().getNamedItem("href").getTextContent();
 		}
 		return null;
-		
-	}
-
-	public static void main(String[] args)
-			throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
-		String url = "https://www.olx.ua/moda-i-stil/odezhda/kiev/?search%5Bprivate_business%5D=private&search%5Bpaidads_listing%5D=1";
-		Node node = openConnection(url);
-		controller.openDatabaseConnection();
-		getAdvertInfo(node);
-		controller.closeConnection();
-
 		
 	}
 	

@@ -23,21 +23,19 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.mokhonich.coursework.SeleniumPage;
+import com.mokhonich.coursework.database.CatalogDatabaseController;
+import com.mokhonich.coursework.selenium.SeleniumPage;
 
 public class TagSoupCatalog {
 
 	private static CatalogDatabaseController controller = new CatalogDatabaseController();
 
-	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
+	public static void testTagsoupCataog() throws IOException, SAXException, ParserConfigurationException {
 		String url = "https://sribniyvik.ua/ua/";
 		Document doc = openConnection(url);
-
 		controller.openDatabaseConnection();
 		getCategoryInfo(doc);
-
 		controller.closeConnection();
-
 	}
 
 	public static Document openConnection(String url) throws IOException, SAXException, ParserConfigurationException {

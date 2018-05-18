@@ -18,13 +18,14 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
-import com.mokhonich.coursework.SeleniumPage;
+import com.mokhonich.coursework.database.NewsDatabaseController;
+import com.mokhonich.coursework.selenium.SeleniumPage;
 
 public class ParseNewsWithTagSoup {
 
 	private static NewsDatabaseController controller = new NewsDatabaseController();
 
-	public static void main(String args[]) throws Exception {
+	public static void testTaSoupNews() throws Exception {
 		String url = "https://www.ukr.net/news/main.html";
 		Document doc = openConnection(url);
 		controller.openDatabaseConnection();

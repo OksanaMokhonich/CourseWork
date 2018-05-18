@@ -11,7 +11,8 @@ import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
 
-import com.mokhonich.coursework.SeleniumPage;
+import com.mokhonich.coursework.database.NewsDatabaseController;
+import com.mokhonich.coursework.selenium.SeleniumPage;
 
 import net.htmlparser.jericho.Element;
 
@@ -20,14 +21,13 @@ public class ParseNewsWithHtmlCleaner {
 	
 	private static NewsDatabaseController controller = new NewsDatabaseController();
 	
-	public static void main(String[] args) throws MalformedURLException, IOException, XPatherException, InterruptedException {
+	public static void testHtmlCLeanerNews() throws XPatherException, InterruptedException {
 		HtmlCleaner cleaner = new HtmlCleaner();
 		String url = "https://www.ukr.net/news/main.html";
 		String page = SeleniumPage.getPageSource(url);
 		TagNode html = cleaner.clean(page);
 		controller.openDatabaseConnection();
 		getNewsCategories(html);
-		
 	}
 	
 	public static void getNewsCategories(TagNode html) throws XPatherException, InterruptedException {
